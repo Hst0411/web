@@ -841,6 +841,7 @@ var tmp_array=[]
 for(var i=0;i<image_array.length;i++){
     tmp_array.push(new Image())
     tmp_array[i].onload=function(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         load_suc++;
         var hasloadstr="Has load"+String(load_suc)+" objects."
         ctx.font = "30px Arial";
