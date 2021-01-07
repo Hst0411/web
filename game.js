@@ -126,7 +126,7 @@ function init(){
     var image_array=["background2.gif"
     ,"Elf_M_Idle_right_1.png","Elf_M_Idle_right_2.png","Elf_M_Idle_left_1.png","Elf_M_Idle_left_2.png",
     "Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png","Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
-    "Elf_M_walk_left_1.png","Elf_M_walk_left_2.png","Elf_M_walk_left_3.png","Elf_M_walk_left_4.png",
+    "Elf_M_Walk_left_1.png","Elf_M_Walk_left_2.png","Elf_M_Walk_left_3.png","Elf_M_Walk_left_4.png",
     "LightBow_right_1.png","LightBow_left_1.png","magic_arrow.png",
     "wing.png","life.png","mp.png",
     "Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
