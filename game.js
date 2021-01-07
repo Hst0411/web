@@ -188,8 +188,8 @@ mp.src="mp.png";
 //player walk
 var player_walk_state=["Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png",
 "Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
-"Elf_M_walk_left_1.png","Elf_M_walk_left_2.png",
-"Elf_M_walk_left_3.png","Elf_M_walk_left_4.png"];
+"Elf_M_Walk_left_1.png","Elf_M_Walk_left_2.png",
+"Elf_M_Walk_left_3.png","Elf_M_Walk_left_4.png"];
 var is_walk_right=false;
 var is_walk_left=false;
 //player bow
