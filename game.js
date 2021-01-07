@@ -145,9 +145,9 @@ function init(){
 var gameStart=false;
 //player
     var player_model=new Image();
-    player_model.src="player1_model/Elf_M_Idle_right_1.png";
-    var player_stand_state=["player1_model/Elf_M_Idle_right_1.png","player1_model/Elf_M_Idle_right_2.png",
-    "player1_model/Elf_M_Idle_left_1.png","player1_model/Elf_M_Idle_left_2.png"]
+    player_model.src="Elf_M_Idle_right_1.png";
+    var player_stand_state=["Elf_M_Idle_right_1.png","Elf_M_Idle_right_2.png",
+    "Elf_M_Idle_left_1.png","Elf_M_Idle_left_2.png"]
     var player_stand_gif;
     var player_is_stand=false;
     var player1=new player(5,5,0,10,0,canvas.width/2,(canvas.height - 100),100,100,5,13,player_model);
@@ -171,35 +171,35 @@ var gameStart=false;
     }
 //player life
 var life=new Image();
-life.src="life_icon/life.png";
+life.src="life.png";
 //player mp
 var mp=new Image();
-mp.src="life_icon/mp.png";
+mp.src="mp.png";
 //player walk
-var player_walk_state=["player1_model/Elf_M_Walk_right_1.png","player1_model/Elf_M_Walk_right_2.png",
-"player1_model/Elf_M_Walk_right_3.png","player1_model/Elf_M_Walk_right_4.png",
-"player1_model/Elf_M_walk_left_1.png","player1_model/Elf_M_walk_left_2.png",
-"player1_model/Elf_M_walk_left_3.png","player1_model/Elf_M_walk_left_4.png"];
+var player_walk_state=["Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png",
+"Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
+"Elf_M_walk_left_1.png","Elf_M_walk_left_2.png",
+"Elf_M_walk_left_3.png","Elf_M_walk_left_4.png"];
 var is_walk_right=false;
 var is_walk_left=false;
 //player bow
-var bowState=["Light bows/LightBow_right_1.png","Light bows/LightBow_left_1.png"]
+var bowState=["LightBow_right_1.png","LightBow_left_1.png"]
 var bow=new Image();
-bow.src="Light bows/LightBow_right_1.png";
+bow.src="LightBow_right_1.png";
 var bowWidth=70;
 var bowHeight=70;
 var bow_atk_width=92;
 var bow_atk_height=92;
 
-var bowatkState=["Light bows/LightBow_atk_right_1.png","Light bows/LightBow_atk_right_2.png","Light bows/LightBow_atk_right_3.png",
-"Light bows/LightBow_atk_right_4.png","Light bows/LightBow_atk_right_5.png",
-"Light bows/LightBow_atk_left_1.png","Light bows/LightBow_atk_left_2.png","Light bows/LightBow_atk_left_3.png",
-"Light bows/LightBow_atk_left_4.png","Light bows/LightBow_atk_left_5.png"];
+var bowatkState=["LightBow_atk_right_1.png","LightBow_atk_right_2.png","LightBow_atk_right_3.png",
+"LightBow_atk_right_4.png","LightBow_atk_right_5.png",
+"LightBow_atk_left_1.png","LightBow_atk_left_2.png","LightBow_atk_left_3.png",
+"LightBow_atk_left_4.png","LightBow_atk_left_5.png"];
 
 var bow_is_atk=false;
 //bow arrow
 var arrow=new Image();
-arrow.src="Light bows/magic_arrow.png";
+arrow.src="magic_arrow.png";
 var arrowWidth=100;
 var arrowHeight=100;
 var arrowX;
@@ -212,6 +212,8 @@ var is_shot=false;
 //player skill
 var skill1_active=false;
 var skill1_isOK=true;
+var skill1_icon=new Image();
+skill1_icon.src="wing.png"
 //enemy
 function enemy(hp,atk,def,speed,jumpSpeed,x,y,width,height,img,state){
     this.hp=hp;
@@ -244,13 +246,13 @@ function enemy(hp,atk,def,speed,jumpSpeed,x,y,width,height,img,state){
 }
 var enemies=new Array;
     //bandit
-var bandit_state=["Bandit/Bandit_Walk_right_1.png","Bandit/Bandit_Walk_right_2.png","Bandit/Bandit_Walk_right_3.png","Bandit/Bandit_Walk_right_4.png",
-"Bandit/Bandit_Walk_left_1.png","Bandit/Bandit_Walk_left_2.png","Bandit/Bandit_Walk_left_3.png","Bandit/Bandit_Walk_left_4.png"];
+var bandit_state=["Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
+"Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png"];
 var bandit1_model = new Image();
 var bandit2_model = new Image();
 bandit1_model.src =bandit_state[4] ;
-var bandit1=new enemy(100,1,0,5,13,700,player1.y,100,100,bandit1_model,bandit_state);
-var bandit2=new enemy(100,1,0,5,13,0,player1.y,100,100,bandit2_model,bandit_state);
+var bandit1=new enemy(100,1,0,5,13,800,player1.y,100,100,bandit1_model,bandit_state);
+var bandit2=new enemy(100,1,0,5,13,-100,player1.y,100,100,bandit2_model,bandit_state);
 //var bandit3=new enemy(100,2,0,5,700,player1.y,100,100,bandit1_model,bandit_state);
 
   //  setTimeout(function(){
@@ -479,13 +481,16 @@ var time_str="60";
         for(var mp_count=2;mp_count<=player1.mp+1;mp_count++){
             ctx.drawImage(mp,mp_count*20,50)
         }
+        if(skill1_active){
+            ctx.drawImage(skill1_icon,30,80)
+        }
         
         if(player1.hp<=0||time_value==0){
             //end the game
             cancelAnimationFrame(draw);
             ctx.font = "50px Arial";
             ctx.fillStyle = "white";
-            score+=player1.hp*1000
+            score+=player1.hp*500
             bgm.pause();
             bgm.currentTime=0
             ctx.fillText("Final Score:"+String(score), canvas.width/2-200, canvas.height/2);
@@ -644,7 +649,7 @@ function changetoAttack(){
                                 }else if(player1.faceLeft){
                                     arrow_axis=-1;
                                 }
-                                bow.src="Light bows/LightBow_1.png";
+                                bow.src="LightBow_1.png";
                                 is_shot=true;
                                 bow_is_atk=false;
                                 clearInterval(func_atk);
@@ -703,7 +708,7 @@ function bandit1_walk(){
             }
                     bandit1.spawn=false;
                     bandit1.y=ground;
-                    bandit1.x=700;
+                    bandit1.x=800;
                     bandit1.hp=100;
         },1000)
     }
@@ -736,7 +741,7 @@ function bandit2_walk(){
                         }
                         bandit2.spawn=false;
                         bandit2.hp=100;
-                        bandit2.x=0;}
+                        bandit2.x=-100;}
             ,1000)
     }
 }
