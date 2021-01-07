@@ -123,6 +123,15 @@ function keyUpHandler(e) {
     }
 }
 function init(){
+    var image_array=["background2.gif"
+    ,"Elf_M_Idle_right_1.png","Elf_M_Idle_right_2.png","Elf_M_Idle_left_1.png","Elf_M_Idle_left_2.png",
+    "Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png","Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
+    "Elf_M_walk_left_1.png","Elf_M_walk_left_2.png","Elf_M_walk_left_3.png","Elf_M_walk_left_4.png",
+    "LightBow_right_1.png","LightBow_left_1.png","magic_arrow.png",
+    "wing.png","life.png","mp.png",
+    "Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
+"Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png"
+]
      rightPressed = false;
      leftPressed = false;
      upPressed = false;
@@ -148,6 +157,7 @@ var gameStart=false;
     player_model.src="Elf_M_Idle_right_1.png";
     var player_stand_state=["Elf_M_Idle_right_1.png","Elf_M_Idle_right_2.png",
     "Elf_M_Idle_left_1.png","Elf_M_Idle_left_2.png"]
+    
     var player_stand_gif;
     var player_is_stand=false;
     var player1=new player(5,5,0,10,0,canvas.width/2,(canvas.height - 100),100,100,5,13,player_model);
@@ -378,7 +388,7 @@ var time_str="60";
                                                 player_stand_state_id=0;
                                             }
                                         }
-                                        ,300);
+                                        ,200);
         }
         
         
@@ -433,7 +443,7 @@ var time_str="60";
                 bandit1_state_id=4;
             }
             bandit1.spawn=true;
-            func_bandit1_walk=setInterval(bandit1_walk,300)
+            func_bandit1_walk=setInterval(bandit1_walk,100)
             enemies.push(bandit1);
         }
         //enemy2
@@ -444,7 +454,7 @@ var time_str="60";
                 bandit2_state_id=4;
             }
             bandit2.spawn=true;
-            func_bandit2_walk=setInterval(bandit2_walk,300)
+            func_bandit2_walk=setInterval(bandit2_walk,100)
             enemies.push(bandit2);
         }
         //enemies
@@ -545,7 +555,7 @@ function right_walk(){
                 clearInterval(func_right_walk);
             }
         }
-        ,300)
+        ,100)
 }
 function left_walk(){
     clearInterval(player_stand_gif);
@@ -568,7 +578,7 @@ function left_walk(){
                 clearInterval(func_left_walk);
             }
         }
-        ,300)
+        ,100)
 }
 //jump
 var gravity=0.5;
@@ -670,7 +680,7 @@ function changetoAttack(){
                             
                             
                         }
-                        ,200);
+                        ,100);
 }
 
 //player1 Invincible time
@@ -825,7 +835,25 @@ function gothit(){
         }
     }
 }
-draw();
+var load_suc=0;
+var load_id=0;
+var tmp_array=[]
+for(var i=0;i<image_array.length;i++){
+    tmp_array.push(new Image())
+    tmp_array[i].onload=function(){
+        load_suc++;
+        var hasloadstr="Has load"+String(load_suc)+" objects."
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(hasloadstr,canvas.width-300, canvas.height-50)
+        if(load_suc>=image_array.length){
+            draw()
+        }
+    }
+    tmp_array[i].src=image_array[i];
+}
+
+
 function restart(){
     
     if(re==true){
