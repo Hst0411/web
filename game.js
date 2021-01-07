@@ -378,7 +378,7 @@ var time_str="60";
                                                 player_stand_state_id=0;
                                             }
                                         }
-                                        ,200);
+                                        ,300);
         }
         
         
@@ -433,7 +433,7 @@ var time_str="60";
                 bandit1_state_id=4;
             }
             bandit1.spawn=true;
-            func_bandit1_walk=setInterval(bandit1_walk,200)
+            func_bandit1_walk=setInterval(bandit1_walk,300)
             enemies.push(bandit1);
         }
         //enemy2
@@ -444,7 +444,7 @@ var time_str="60";
                 bandit2_state_id=4;
             }
             bandit2.spawn=true;
-            func_bandit2_walk=setInterval(bandit2_walk,200)
+            func_bandit2_walk=setInterval(bandit2_walk,300)
             enemies.push(bandit2);
         }
         //enemies
@@ -545,7 +545,7 @@ function right_walk(){
                 clearInterval(func_right_walk);
             }
         }
-        ,200)
+        ,300)
 }
 function left_walk(){
     clearInterval(player_stand_gif);
@@ -568,7 +568,7 @@ function left_walk(){
                 clearInterval(func_left_walk);
             }
         }
-        ,200)
+        ,300)
 }
 //jump
 var gravity=0.5;
