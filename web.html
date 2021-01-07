@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Web</title>
+    <style>
+        body{
+          background-image: url(background.gif);
+          background-repeat: no-repeat;
+          background-size: 100%;
+        }
+        #op{
+            text-align: center;
+            position: absolute;
+            top:100px;
+            left:500px;
+        }
+        #xx{
+          text-align: center;
+            position: absolute;
+            top:100px;
+            left:900px;
+        }
+        #gamename{
+          position:relative;
+          top: 100px;
+          text-align:center; 
+        }
+        .login{
+          top:100px;
+          text-align: center;
+          position: relative;
+          margin: auto;
+          padding: 50px;
+          width: 250px;
+          height: 300px;
+          background-color: white;
+          border-radius: 5px;                 /*框的角*/
+          border-top: 10px solid #df5334;   /*框框上方*/
+          border-bottom: 10px solid #df5334;
+          box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1); /*rgba的a為陰影部分*/
+        }
+        .start,.leave,.option{
+          color: white;  
+          background: #df5334;
+          width: 200px;
+          height: 50px;
+          margin: 10px;
+          font-weight: bolder;
+          border:0;           /*去邊框*/
+          border-radius: 5px;
+          cursor: pointer; /*可以指*/
+        }
+        .start:hover,.leave:hover,.option:hover{
+          border:2px;
+          background-color: #db6937;
+          border-style: solid;  
+        }
+        h4{
+          position: absolute;
+          right:10px;
+          bottom:0px;
+          font-size:20px;
+          font-weight: bolder;
+          color: #eeff00;
+        }
+        h4:hover{
+          background-color: lightblue;
+          color:navy;
+        }
+        .howtoplay{
+          position: absolute;
+          left:10px;
+          bottom:10px;
+        }
+        .ppt{
+          position: absolute;
+          right:10px;
+          bottom:60px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("button").mouseover(function(){
+            document.getElementById("buttonsound").play();
+        });
+        $("#start").click(function(){
+            document.getElementById("login").style.display = "none";
+            document.getElementById("gamename").style.display = "none";
+        });
+        $("#option").click(function(){
+          document.getElementById("op").style.display = "";
+          document.getElementById("xx").style.display = "";
+        });
+        $("#howtoplay").click(function(){
+          document.getElementById("op").style.display = "";
+          document.getElementById("xx").style.display = "";
+        });
+        $("#xx").click(function(){
+          document.getElementById("op").style.display = "none";
+          document.getElementById("xx").style.display = "none";
+        });
+        $("#leave").click(function(){
+          if(confirm("確定要離開遊戲 ?")){
+              window.close();
+          }
+        });
+      });
+    </script>
+  </head>
+  
+  <body>
+    <div id = "gamename">
+      <h2>(範例)2D遊戲</h2>
+    </div>
+    <div class = "login" id = "login">
+      <h3>登入</h3>
+      <button id = "start" class = "start">開始遊戲</button>
+      <button id = "option" class = "option">遊戲說明</button>
+      <button id = "leave" class = "leave">離開遊戲</button>
+      
+    </div>
+      <h4>Created by 徐劭廷 郭書廷</h4>
+      <a href = "00857105-00857141.pptx" class = ppt>
+        <img src = "img-ppt.jfif" height="90px" width="90px">
+      </a>
+      <input type = "image" src = "question_mark.png" id = "howtoplay" class = howtoplay height="90px" width="90px">
+      <img src = "optionimg.jpg" style = "z-index: 1; display: none;" id = "op" width="500px" height="500px">
+      <input type = "image" src = "xx.png" style = "z-index: 2; display: none;" id = "xx" width="100px" height="100px">
+    <audio id="buttonsound">
+      <source src="buttonsound.mp3" type="audio/mp3">
+    </audio>
+    <audio id="winsound">
+      <source src="wingame.mp3" type="audio/mp3">
+    </audio>
+  </body>
+</html>
