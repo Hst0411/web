@@ -128,6 +128,8 @@ function init(){
     "Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png","Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
     "Elf_M_Walk_left_1.png","Elf_M_Walk_left_2.png","Elf_M_Walk_left_3.png","Elf_M_Walk_left_4.png",
     "LightBow_right_1.png","LightBow_left_1.png","magic_arrow.png",
+    "LightBow_atk_right_1.png","LightBow_atk_right_2.png","LightBow_atk_right_3.png","LightBow_atk_right_4.png","LightBow_atk_right_5.png",
+    "LightBow_atk_left_1.png","LightBow_atk_left_2.png","LightBow_atk_left_3.png","LightBow_atk_left_4.png","LightBow_atk_left_5.png",
     "wing.png","life.png","mp.png",
     "Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
 "Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png"
@@ -680,7 +682,7 @@ function changetoAttack(){
                             
                             
                         }
-                        ,200);
+                        ,150);
 }
 
 //player1 Invincible time
