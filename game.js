@@ -680,7 +680,7 @@ function changetoAttack(){
                             
                             
                         }
-                        ,100);
+                        ,200);
 }
 
 //player1 Invincible time
