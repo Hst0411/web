@@ -807,6 +807,7 @@ function hitenemy(){
             (realarrowY+10>=enemies[enemy_id].y-enemies[enemy_id].height/2&&realarrowY+10<=enemies[enemy_id].y)){
                 if((enemies[enemy_id].x<=arrowX+arrowWidth&&enemies[enemy_id].x+enemies[enemy_id].width>=arrowX+arrowWidth)
                 ||(enemies[enemy_id].x<=arrowX&&enemies[enemy_id].x+enemies[enemy_id].width>=arrowX)){
+                    document.getElementById("enemy_get_hit").play();
                     enemies[enemy_id].hp-=player1.atk*max_force;
                     
                     is_shot=false;
@@ -828,7 +829,7 @@ function gothit(){
                 if(!player1.ishit&&(enemies[enemy_id].x<=player1.x+player1.width*2/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width*2/3)
                 ||(enemies[enemy_id].x<=player1.x+player1.width/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width/3)){
                     //music
-                    document.getElementById("get_hit").play()
+                    document.getElementById("get_hit").play();
                     player1.hp-=enemies[enemy_id].atk;
                     player1.ishit=true;
                     Invincible();
