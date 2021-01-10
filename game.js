@@ -828,6 +828,7 @@ function gothit(){
                 if(!player1.ishit&&(enemies[enemy_id].x<=player1.x+player1.width*2/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width*2/3)
                 ||(enemies[enemy_id].x<=player1.x+player1.width/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width/3)){
                     //music
+                    document.getElementById("get_hit").play()
                     player1.hp-=enemies[enemy_id].atk;
                     player1.ishit=true;
                     Invincible();
