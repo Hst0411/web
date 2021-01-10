@@ -134,6 +134,9 @@ function init(){
     "Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
 "Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png"
 ]
+var audio_array=[
+    "get_hit.wav","enemy_get_hit.wav","stabbing.mp3","cutting_with_a_katana1.mp3","HolFix - Jeremy the Different Giraffe Theme.mp3"
+]
      rightPressed = false;
      leftPressed = false;
      upPressed = false;
@@ -842,6 +845,7 @@ function gothit(){
 var load_suc=0;
 var load_id=0;
 var tmp_array=[]
+var audio_suc=0;
 for(var i=0;i<image_array.length;i++){
     tmp_array.push(new Image())
     tmp_array[i].onload=function(){
@@ -852,12 +856,31 @@ for(var i=0;i<image_array.length;i++){
         ctx.fillStyle = "white";
         ctx.fillText(hasloadstr,canvas.width-300, canvas.height-50)
         if(load_suc>=image_array.length){
-            draw()
+            audio_load()
         }
     }
     tmp_array[i].src=image_array[i];
 }
-
+var tmp_array=[]
+function audio_load(){
+    for(var i=0;i<audio_array.length;i++){
+        tmp_array.push(new Audio());
+        tmp_array[i].addEventListener('canplaythrough',function(){audio_suc++;
+                                                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                                                hasloadstr="Has loaded "+String(load_suc+audio_suc)+" objects."
+                                                                ctx.font = "30px Arial";
+                                                                ctx.fillStyle = "white";
+                                                                ctx.fillText(hasloadstr,canvas.width-300, canvas.height-50)
+                                                                if(audio_suc>=audio_array.length){
+                                                                    draw()
+                                                                }
+                                                                }
+                                    , false);
+        tmp_array[i].src=audio_array[i]
+        
+        
+    }
+}
 
 function restart(){
     
