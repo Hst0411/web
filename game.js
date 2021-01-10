@@ -285,7 +285,7 @@ var func_bandit2_walk;
 //music
 var attack_music=document.getElementById("hardattack");
 var bgm= document.getElementById("bgm");
-bgm.play();
+
 //score and time
 var score=0;
 var time;
@@ -847,7 +847,7 @@ for(var i=0;i<image_array.length;i++){
     tmp_array[i].onload=function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         load_suc++;
-        var hasloadstr="Has load"+String(load_suc)+" objects."
+        var hasloadstr="Has loaded "+String(load_suc)+" objects."
         ctx.font = "30px Arial";
         ctx.fillStyle = "white";
         ctx.fillText(hasloadstr,canvas.width-300, canvas.height-50)
