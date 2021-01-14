@@ -559,6 +559,13 @@ volume_icon.src="volume.png"
             ctx.fillStyle = "black";
             ctx.fillText("Press R to start the new game  ",canvas.width/2-200, canvas.height/2+50)
             ctx.fillText("or Press C to continue ",canvas.width/2-200, canvas.height/2+80)
+            if(localStorage.length==0){
+                rank=1;
+                localStorage.setItem(rank,score)
+            }else{
+                rank=localStorage.length+1;
+                localStorage.setItem(rank,score)
+            }
             func_re=setInterval(restart,1)
         }
         else if(player1.hp<=0||time_value==0||(stage[1]&&stage_kill[1]>=stage_goal[1])){
@@ -581,7 +588,7 @@ volume_icon.src="volume.png"
                 rank=1;
                 localStorage.setItem(rank,score)
             }else{
-                rank=localStorage.length+1
+                rank=localStorage.length+1;
                 localStorage.setItem(rank,score)
             }
             for(var i = 1; i <= 10; i++){
