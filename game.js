@@ -1125,6 +1125,9 @@ $(document).ready(function(){
     $("button,#xx").mouseover(function(){
         document.getElementById("buttonsound").play();
     });
+    $("#rankbutton").click(function(){
+        document.getElementById("ranktable").style.display = "";
+    });
     $("#start").click(function(){
         document.getElementById("login").style.display = "none";
         document.getElementById("gamename").style.display = "none";
@@ -1143,6 +1146,9 @@ $(document).ready(function(){
         document.getElementById("op").style.display = "none";
         document.getElementById("xx").style.display = "none";
       });
+    $("#tableclose").click(function(){
+        document.getElementById("ranktable").style.display = "none";
+    });
     $("#leave").click(function(){
       if(confirm("確定要離開遊戲 ?")){
           window.close();
