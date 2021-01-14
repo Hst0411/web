@@ -3,6 +3,9 @@
 <head><link href="favicon.ico" rel="shortcut icon">
     <meta charset="utf-8" />
     <title>Final project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
       @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
         body{
@@ -30,23 +33,35 @@
           border-color: #03bcf5;  
         }
         #gamename{
-          position:relative;
-          top: 100px;
+          position: absolute;
+          top: 120px;
+          left:730px;
           text-align:center; 
         }
+        #gamename h2{
+          font-size: 25px;
+          font-weight: bolder;
+          color:black;
+        }
         .login{
-          top:100px;
+          top:200px;
           text-align: center;
-          position: relative;
+          position: absolute;
+          left:600px;
           margin: auto;
           padding: 50px;
-          width: 250px;
-          height: 300px;
+          width: 350px;
+          height: 420px;
           background-color: white;
           border-radius: 5px;                 /*框的角*/
           border-top: 10px solid #df5334;   /*框框上方*/
           border-bottom: 10px solid #df5334;
           box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1); /*rgba的a為陰影部分*/
+        }
+        #login h3{
+          color: black;
+          font-size: 20px;
+          font-family: 'Noto Sans TC', sans-serif;
         }
         .start,.leave,.option{
           color: white;  
@@ -64,10 +79,13 @@
           background-color: #db6937;
           border-style: solid;  
         }
+        h2{
+          font-family: 'Noto Sans TC', sans-serif;
+        }
         h4{
           position: absolute;
           right:10px;
-          bottom:0px;
+          bottom:12px;
           font-size:20px;
           font-family: 'Noto Sans TC', sans-serif;
           font-weight: bolder;
@@ -76,6 +94,34 @@
         h4:hover{
           background-color: lightblue;
           color:navy;
+        }
+        .rankbutton{
+          color: white;  
+          background: #df5334;
+          width: 100px;
+          height: 50px;
+          margin: 10px;
+          position: absolute;
+          right: 10px;
+          top:0px;
+          font-weight: bolder;
+          border:0;           /*去邊框*/
+          border-radius: 5px;
+          cursor: pointer; /*可以指*/
+        }
+        .rankbutton:hover{
+          border:2px;
+          background-color: #db6937;
+          border-style: solid;  
+        }
+        #ranktable{
+          height:400px;
+          width:370px;
+        }
+        .ranktable{
+          position: absolute; 
+          right:0px; 
+          top:100px;
         }
         .howtoplay{
           position: absolute;
@@ -94,7 +140,8 @@
             text-align: center; margin-top: 30px; 
         } 
     </style>
-    <script></script>
+    
+    <script src="game.js"></script>
 </head>
 <body>
     <audio id="hardattack">
@@ -116,14 +163,13 @@
       <source src="stabbing.mp3" type="audio/mp3">
     </audio>
     <canvas id="myCanvas" width="800" height="580" style = "display: none;" ></canvas>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="game.js"></script>
+    
 
     <div id = "showgame"></div>
 
 
     <div id = "gamename">
-        <h2 style="font-family: 'Noto Sans TC', sans-serif;">獵殺盜賊</h2>
+        <h2>獵殺盜賊</h2>
     </div>
 
 
@@ -136,12 +182,72 @@
 
 
     <h4>Created by 徐劭廷 郭書廷</h4>
+    
     <a href = "00857105-00857141.pptx" class = ppt>
         <img src = "img-ppt.jfif" height="90px" width="90px">
     </a>
     <input type = "image" src = "question_mark.png" id = "howtoplay" class = howtoplay height="90px" width="90px">
     <img src = "optionimg.JPG" style = "z-index: 1; display: none;" id = "op" width="550px" height="500px">
     <input type = "image" src = "xx.png" style = "z-index: 2; display: none;" id = "xx" width="100px" height="100px">
-  
+
+    <button id = "rankbutton" class = "rankbutton">排行榜</button>
+    
+    <div class = "ranktable">
+      <div class="container" style = "display: none;" id = "ranktable">
+        <h2>大神排行榜</h2>
+        <p>本機前十名!</p>
+        <table class="table">
+          <thead>
+            <tr class = "active">
+              <th>Rank</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody> 
+            <tr class="success">
+              <td>1</td>
+              <td>87</td>
+            </tr>
+            <tr class="danger">
+              <td>2</td>
+              <td>50</td>
+            </tr>
+            <tr class="info">
+              <td>3</td>
+              <td>36</td>
+            </tr>
+            <tr class="warning">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="active">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="success">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="danger">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="info">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="warning">
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="active">
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <button id = "tableclose" style="position: relative; text-align: center;">關閉</button>
+      </div>
+    </div>
 </body>
 </html>
