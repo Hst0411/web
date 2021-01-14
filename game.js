@@ -567,9 +567,29 @@ volume_icon.src="volume.png"
                 localStorage.setItem(rank,score)
             }
             func_re=setInterval(restart,1)
+            for(var i = 1; i <= 10; i++){
+                allscore[i] = localStorage.getItem(JSON.stringify(i));
+                console.log(allscore[i]);
+            }
+            for(var i = 1; i <= 10; i++){
+                for(var j = i + 1; j <= 10; j++){
+                    if(parseInt(allscore[i]) < parseInt(allscore[j])){
+                        var tmp = allscore[i];
+                        allscore[i] = allscore[j];
+                        allscore[j] = tmp;
+                    }
+                }
+            }
+            for(var i = 1; i <= 10; i++){
+                console.log(allscore[i])
+                document.getElementById("r" + i).innerHTML = i;
+                if(allscore[i] != undefined){
+                    document.getElementById("s" + i).innerHTML = allscore[i];
+                }
+            }
         }
         else if(player1.hp<=0||time_value==0||(stage[1]&&stage_kill[1]>=stage_goal[1])){
-            console.log(score)
+            
             //end the game
             cancelAnimationFrame(draw);
             ctx.font = "50px Arial";
@@ -597,7 +617,7 @@ volume_icon.src="volume.png"
             }
             for(var i = 1; i <= 10; i++){
                 for(var j = i + 1; j <= 10; j++){
-                    if(allscore[i] < allscore[j]){
+                    if(parseInt(allscore[i]) < parseInt(allscore[j])){
                         var tmp = allscore[i];
                         allscore[i] = allscore[j];
                         allscore[j] = tmp;
@@ -605,6 +625,7 @@ volume_icon.src="volume.png"
                 }
             }
             for(var i = 1; i <= 10; i++){
+                console.log(allscore[i])
                 document.getElementById("r" + i).innerHTML = i;
                 if(allscore[i] != undefined){
                     document.getElementById("s" + i).innerHTML = allscore[i];
@@ -1108,7 +1129,7 @@ var audio_stop_canvas={x:750 ,y:20,width:30,height:30}
 function button_click(e){
     var rect = canvas.getBoundingClientRect();
     
-    console.log(e.clientX,e.clientY)
+
     if(e.clientX-rect.left>=audio_stop_button.x&&e.clientX-rect.left<=audio_stop_button.x+audio_stop_button.width
         &&e.clientY- rect.top>=audio_stop_button.y&&e.clientY- rect.top<=audio_stop_button.y+audio_stop_button.height){
         if(!is_silence){
@@ -1183,7 +1204,7 @@ $(document).ready(function(){
     }
     for(var i = 1; i <= 10; i++){
         for(var j = i + 1; j <= 10; j++){
-            if(allscore[i] < allscore[j]){
+            if(parseInt(allscore[i]) < parseInt(allscore[j])){
                 var tmp = allscore[i];
                 allscore[i] = allscore[j];
                 allscore[j] = tmp;
