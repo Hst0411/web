@@ -7,6 +7,7 @@ var spacePressed = false;
 var isJump=false; 
 var shiftleftPressed=false; 
 var re=false;
+var next_stage=false;
 var j;
 var jumpSpeed;
 
@@ -48,7 +49,9 @@ function keyDownHandler(e) {
                 return;
                 case "KeyR":
                     re=true;
-
+                return;
+                case "KeyC":
+                    next_stage=true;
                 return;
             default:
                 return;
@@ -104,6 +107,9 @@ function keyUpHandler(e) {
             case "KeyR":
                 re=false
             return;
+            case "KeyC":
+                next_stage=false;
+            return;
             default:
                 return;
         }
@@ -123,6 +129,7 @@ function keyUpHandler(e) {
     }
 }
 function init(){
+//image_array
     var image_array=["background2.gif"
     ,"Elf_M_Idle_right_1.png","Elf_M_Idle_right_2.png","Elf_M_Idle_left_1.png","Elf_M_Idle_left_2.png",
     "Elf_M_Walk_right_1.png","Elf_M_Walk_right_2.png","Elf_M_Walk_right_3.png","Elf_M_Walk_right_4.png",
@@ -132,8 +139,12 @@ function init(){
     "LightBow_atk_left_1.png","LightBow_atk_left_2.png","LightBow_atk_left_3.png","LightBow_atk_left_4.png","LightBow_atk_left_5.png",
     "wing.png","life.png","mp.png",
     "Bandit_Walk_right_1.png","Bandit_Walk_right_2.png","Bandit_Walk_right_3.png","Bandit_Walk_right_4.png",
-"Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png"
+"Bandit_Walk_left_1.png","Bandit_Walk_left_2.png","Bandit_Walk_left_3.png","Bandit_Walk_left_4.png",
+"Wolf_right_Walk_1.png","Wolf_right_Walk_2.png","Wolf_right_Walk_3.png","Wolf_right_Walk_4.png",
+"Wolf_left_Walk_1.png","Wolf_left_Walk_2.png","Wolf_left_Walk_3.png","Wolf_left_Walk_4.png",
+"pause.png","play.png","volume.png","non_volume.png"
 ]
+//audio_array
 var audio_array=[
     "get_hit.wav","enemy_get_hit.wav","stabbing.mp3","cutting_with_a_katana1.mp3","HolFix - Jeremy the Different Giraffe Theme.mp3"
 ]
@@ -155,6 +166,7 @@ var audio_array=[
     var ctx = canvas.getContext("2d");
     var background=new Image();
     background.src="background2.gif";
+    var canvas_stop=false;
 //game 
 var gameStart=false;
 //player
@@ -230,6 +242,7 @@ var skill1_isOK=true;
 var skill1_icon=new Image();
 skill1_icon.src="wing.png"
 //enemy
+
 function enemy(hp,atk,def,speed,jumpSpeed,x,y,width,height,img,state){
     this.hp=hp;
     this.atk=atk;
@@ -268,40 +281,50 @@ var bandit2_model = new Image();
 bandit1_model.src =bandit_state[4] ;
 var bandit1=new enemy(100,1,0,5,13,800,player1.y,100,100,bandit1_model,bandit_state);
 var bandit2=new enemy(100,1,0,5,13,-100,player1.y,100,100,bandit2_model,bandit_state);
-//var bandit3=new enemy(100,2,0,5,700,player1.y,100,100,bandit1_model,bandit_state);
-
-  //  setTimeout(function(){
-    //    bandit3.spawn=true;
-      //  func_bandit3_walk=setInterval(bandit3_walk,100)
-       // enemies.push(bandit3);},20000);
 var func_bandit1_walk;
 var func_bandit2_walk;
-//var func_bandit3_walk;
+    //bandit_knight
+var bandit_knight_state=["Wolf_right_Walk_1.png","Wolf_right_Walk_2.png","Wolf_right_Walk_3.png","Wolf_right_Walk_4.png",
+"Wolf_left_Walk_1.png","Wolf_left_Walk_2.png","Wolf_left_Walk_3.png","Wolf_left_Walk_4.png"]
+var bandit_knight_model=new Image();
+var bandit_knight1=new enemy(1000,2,0,20,15,800,player1.y,100,100,bandit_knight_model,bandit_knight_state);
+bandit_knight1.canjump=true;
 //ground
     var ground = (canvas.height - player1.height)-20;
     var edge=canvas.width-(player1.width/2);
     player1.y=ground;
     bandit1.y=ground;
     bandit2.y=ground;
-    //bandit3.y=ground;
-
+    bandit_knight1.y=ground;
 //music
 var attack_music=document.getElementById("hardattack");
 var bgm= document.getElementById("bgm");
-
+var is_silence=false;
 //score and time
 var score=0;
 var time;
 var time_value;
 var time_str="60";
-
-    // cooldown
-    
-    var attackcolldown=0;
+//stage
+var stage=[true,false]
+    //stage goal
+    var stage_goal=[5,1]
+    var stage_kill=[0,0]
+//game setting
+var pause_icon=new Image();
+pause_icon.src="pause.png"
+var volume_icon=new Image()
+volume_icon.src="volume.png"
     // DRAW(start)
     function draw() {
- 
-        document.getElementById("bgm").play();
+        if(stage[0]){
+            bgm=document.getElementById("bgm")
+        }else if(stage[1]){
+            //bgm boss
+        }
+        if(!is_silence&&bgm.paused){
+            bgm.play();     
+        }
         //player1 is face right or left
         if(!bow_is_atk){
             if(rightPressed&&player1.faceLeft){
@@ -437,30 +460,47 @@ var time_str="60";
         hitenemy();
         //player check
         gothit();
-        //enemies jump
-        bandit1_jump();
-        bandit2_jump();
-        //enemy1
-        if(!bandit1.spawn){
-            if(bandit1.x<player1.x){
-                bandit1_state_id=0;
-            }else{
-                bandit1_state_id=4;
+       //stage1 enemies
+        if(stage[0]){
+             //enemies jump
+            bandit1_jump();
+            bandit2_jump();
+            //enemy1
+            if(!bandit1.spawn){
+                if(bandit1.x<player1.x){
+                    bandit1_state_id=0;
+                }else{
+                    bandit1_state_id=4;
+                }
+                bandit1.spawn=true;
+                func_bandit1_walk=setInterval(bandit1_walk,100)
+                enemies.push(bandit1);
             }
-            bandit1.spawn=true;
-            func_bandit1_walk=setInterval(bandit1_walk,100)
-            enemies.push(bandit1);
-        }
-        //enemy2
-        if(!bandit2.spawn){
-            if(bandit2.x<player1.x){
-                bandit2_state_id=0;
-            }else{
-                bandit2_state_id=4;
+            //enemy2
+            if(!bandit2.spawn){
+                if(bandit2.x<player1.x){
+                    bandit2_state_id=0;
+                }else{
+                    bandit2_state_id=4;
+                }
+                bandit2.spawn=true;
+                func_bandit2_walk=setInterval(bandit2_walk,100)
+                enemies.push(bandit2);
             }
-            bandit2.spawn=true;
-            func_bandit2_walk=setInterval(bandit2_walk,100)
-            enemies.push(bandit2);
+        }else if(stage[1]){
+            bandit_knight1_jump()
+            //bandit_knight1 spawn
+            if(!bandit_knight1.spawn){
+                if(bandit_knight1.x<player1.x){
+                    bandit_knight1_state_id=0;
+                }else{
+                    bandit_knight1_state_id=4;
+                }
+                
+                bandit_knight1.spawn=true;
+                func_bandit_knight1_walk=setInterval(bandit_knight1_walk,100)
+                enemies.push(bandit_knight1);
+            }
         }
         //enemies
         for(var enemy_id=0;enemy_id<enemies.length;enemy_id++){
@@ -470,42 +510,64 @@ var time_str="60";
             ctx.drawImage(enemies[enemy_id].img,0,0,enemies[enemy_id].width,enemies[enemy_id].height,
                 enemies[enemy_id].x,enemies[enemy_id].y,enemies[enemy_id].width,enemies[enemy_id].width);
             }else if(enemies[enemy_id].hp<=0){
-                if(enemies[enemy_id].canjump){
-                    score+=200;
-                    
-                }else{
-                    score+=100;
-                    
+                if(stage[0]){
+                    stage_kill[0]+=1;
+                    if(enemies[enemy_id].canjump){
+                        score+=100*2;
+                    }else{
+                        score+=100;
+                    }
+                }else if(stage[1]){
+                    stage_kill[1]+=1
+                    score+=2500;
                 }
+                
                 
                 enemies.splice(enemy_id,1);
                 
                 enemy_id-=1;
             }
         }
-        //player life board
-            //ctx.beginPath();
-            //ctx.lineWidth = "6";
-            //ctx.rect(0,0,200,100)
-            //ctx.fillstyle="red"
-            //ctx.fill();
-        //life
         for(var life_count=1;life_count<=player1.hp;life_count++){
             ctx.drawImage(life,life_count*20,0)
         }
         for(var mp_count=2;mp_count<=player1.mp+1;mp_count++){
             ctx.drawImage(mp,mp_count*20,50)
         }
+        
+        
         if(skill1_active){
             ctx.drawImage(skill1_icon,30,80)
         }
-        
-        if(player1.hp<=0||time_value==0){
+        //canvas  button
+            ctx.drawImage(volume_icon,700,20)
+            ctx.drawImage(pause_icon,750,20)
+            
+            canvas.onclick=button_click
+        //game over
+        if(stage[0]&&stage_kill[0]>=stage_goal[0]){
+            cancelAnimationFrame(draw);
+            ctx.font = "50px Arial";
+            ctx.fillStyle = "white";
+            score+=player1.hp*500
+            score+=time_value*100
+            bgm.pause();
+            bgm.currentTime=0
+            ctx.fillText("The Score is:"+String(score), canvas.width/2-200, canvas.height/2);
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("Press R to start the new game  ",canvas.width/2-200, canvas.height/2+50)
+            ctx.fillText("or Press C to continue ",canvas.width/2-200, canvas.height/2+80)
+            func_re=setInterval(restart,1)
+        }
+        else if(player1.hp<=0||time_value==0||(stage[1]&&stage_kill[1]>=stage_goal[1])){
+            console.log(score)
             //end the game
             cancelAnimationFrame(draw);
             ctx.font = "50px Arial";
             ctx.fillStyle = "white";
             score+=player1.hp*500
+            
             bgm.pause();
             bgm.currentTime=0
             ctx.fillText("Final Score:"+String(score), canvas.width/2-200, canvas.height/2);
@@ -513,10 +575,26 @@ var time_str="60";
             ctx.fillStyle = "white";
             ctx.fillText("Press R to start the new game",canvas.width/2-200, canvas.height/2+50)
             func_re=setInterval(restart,1)
-        }else{
+            //record the highest score
+        }else if(!canvas_stop){
             requestAnimationFrame(draw);
         }
-        
+        if(canvas_stop){
+            cancelAnimationFrame(draw)
+            bgm.pause();
+        }
+        //enemy(boss) icon
+        if(stage[1]&&stage_kill[1]<stage_goal[1]){
+            for(var life_count=0;life_count<=parseInt(bandit_knight1.hp/100);life_count++){
+                ctx.drawImage(life,700-life_count*20,40)
+                
+            }
+            ctx.fillStyle ="black";
+            ctx.fillRect(670, 80, 80, 30);
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("Boss",670,105)
+        }
     }
 //time update
 time_value=60;
@@ -524,6 +602,10 @@ time=setInterval(time_countup,1000)
 function time_countup(){
     time_value-=1;
     player1.mp+=1;
+    if(time_value<0){
+        time_str=="00";
+        time_value=0;
+    }
     if(player1.mp>5){
         player1.mp=5;
     }
@@ -599,15 +681,18 @@ function jump(){
     
 }
 function fall(){
-    if(player1.y>=ground){
-        clearInterval(j);
-        jumpSpeed=player1.jumpSpeed;
-        playerY=ground;
-        isJump=false;
-    }else{
-        player1.y-=jumpSpeed;
-        jumpSpeed-=gravity;
+    if(!canvas_stop){
+        if(player1.y>=ground){
+            clearInterval(j);
+            jumpSpeed=player1.jumpSpeed;
+            playerY=ground;
+            isJump=false;
+        }else{
+            player1.y-=jumpSpeed;
+            jumpSpeed-=gravity;
+        }
     }
+    
     
 }
 
@@ -622,77 +707,98 @@ function changetoAttack(){
     }
     bow.src=bowatkState[bowatkState_id];
     func_atk=setInterval(function(){
-                            if(bowatkState_id==4){
-                                max_force=3;
-                                arrow_max_distance=300;
-                            }else{
-                                max_force=1;
-                                arrow_max_distance=100;
-                            }
-                            if(player1.faceRight&&bowatkState_id<=4){
-                                arrowX=player1.x+20;
-                                arrowY=player1.y+bow_atk_height/4+10;
-                            }else if(player1.faceLeft&&bowatkState_id<=4){
-                                arrowX=player1.x;
-                                arrowY=player1.y+bow_atk_height/4+10;
-                            }
-                            realarrowY=arrowY-40;
-                            if(spacePressed){
-
-                                if(bowatkState_id<4){
-                                    bowatkState_id+=1;
-                                }
-                                if(player1.faceRight){
-                                    bow.src=bowatkState[bowatkState_id];
-                                }else if(player1.faceLeft){
-                                    
-                                    bow.src=bowatkState[bowatkState_id+5];
-                                }
-                            }
-                            else if(!spacePressed){
-                                
-                                if(max_force==3){
-                                    attack_music.play();//heavy attack music
+                            if(!canvas_stop){
+                                if(bowatkState_id==4){
+                                    max_force=3;
+                                    arrow_max_distance=300;
                                 }else{
-                                    document.getElementById("slightattack").play();//light attack music
+                                    max_force=1;
+                                    arrow_max_distance=100;
                                 }
-        
-                                var arrow_distance=0;
-                                var arrow_axis;
-                                if(player1.faceRight){
-                                    arrow_axis=1;
-                                }else if(player1.faceLeft){
-                                    arrow_axis=-1;
+                                if(player1.faceRight&&bowatkState_id<=4){
+                                    arrowX=player1.x+20;
+                                    arrowY=player1.y+bow_atk_height/4+10;
+                                }else if(player1.faceLeft&&bowatkState_id<=4){
+                                    arrowX=player1.x;
+                                    arrowY=player1.y+bow_atk_height/4+10;
                                 }
-                                bow.src="LightBow_1.png";
-                                is_shot=true;
-                                bow_is_atk=false;
-                                clearInterval(func_atk);
-                                func_atk_end=setInterval(function(){
-                                                            
-                                                            arrow_distance+=arrowSpeed;
-                                                            arrowX+=arrowSpeed*arrow_axis;
-                                                            if(arrow_distance>=arrow_max_distance){
-                                                               arrow_distance=0;
-                                                                is_shot=false;
-                                                                clearInterval(func_atk_end);
+                                realarrowY=arrowY-40;
+                                if(spacePressed){
+
+                                    if(bowatkState_id<4){
+                                        bowatkState_id+=1;
+                                    }
+                                    if(player1.faceRight){
+                                        bow.src=bowatkState[bowatkState_id];
+                                    }else if(player1.faceLeft){
+                                        
+                                        bow.src=bowatkState[bowatkState_id+5];
+                                    }
+                                }
+                                else if(!spacePressed){
+                                    
+                                    if(max_force==3){
+                                        if(!is_silence){
+                                            attack_music.play();//heavy attack music
+                                        }
+                                        
+                                    }else{
+                                        if(!is_silence){
+                                            document.getElementById("slightattack").play();//light attack music
+                                        }
+                                        
+                                    }
+            
+                                    var arrow_distance=0;
+                                    var arrow_axis;
+                                    if(player1.faceRight){
+                                        arrow_axis=1;
+                                    }else if(player1.faceLeft){
+                                        arrow_axis=-1;
+                                    }
+                                    bow.src="LightBow_1.png";
+                                    is_shot=true;
+                                    bow_is_atk=false;
+                                    clearInterval(func_atk);
+                                    func_atk_end=setInterval(function(){
+                                                                if(!canvas_stop){
+                                                                    arrow_distance+=arrowSpeed;
+                                                                    arrowX+=arrowSpeed*arrow_axis;
+                                                                    if(arrow_distance>=arrow_max_distance){
+                                                                    arrow_distance=0;
+                                                                        is_shot=false;
+                                                                        clearInterval(func_atk_end);
+                                                                    }
+                                                                }
+                                                                
                                                             }
-                                                        }
-                                ,20)
+                                    ,20)
+                                    
+                                    
+                                }
                                 
                                 
                             }
-                            
-                            
+                                
                         }
                         ,150);
 }
 
 //player1 Invincible time
-
+var Invincible_time=0
+var func_Invincible_time;
 function Invincible(){
-
-    setTimeout(function(){player1.ishit=false;},2000);
+    Invincible_time=2;
+    func_Invincible_time=setInterval(function(){
+                                    if(!canvas_stop){
+                                        Invincible_time-=0.1;
+                                    }
+                                    if(Invincible_time<=0){
+                                        clearInterval(func_Invincible_time)
+                                        player1.ishit=false;
+                                    }
+                                }
+        ,100);
 }
 //bandit1 animation
 var bandit1_state_id=0;
@@ -728,6 +834,7 @@ function bandit1_walk(){
         },1000)
     }
 }
+//bandit2 animation
 var bandit2_state_id=0;
 function bandit2_walk(){
     if(bandit2_state_id>=4){
@@ -802,6 +909,63 @@ function bandit2_fall(){
         bandit2_jumpSpeed-=gravity;
     }
 }
+//stage2 enemies animation
+var bandit_knight1_state_id=0;
+function bandit_knight1_walk(){
+    if(!canvas_stop){
+        if(bandit_knight1_state_id>=4){
+            bandit_knight1_state_id=0;
+        }
+        if(bandit_knight1.x>0&&bandit_knight1.faceLeft){
+            bandit_knight1.faceLeft=true;
+            bandit_knight1.faceRight=false;
+            bandit_knight1.x-=bandit_knight1.speed;
+            bandit_knight1.img.src=bandit_knight1.state[bandit_knight1_state_id+4];
+            
+        }else if(bandit_knight1.x<edge){
+            bandit_knight1.faceLeft=false;
+            bandit_knight1.faceRight=true;
+            bandit_knight1.x+=bandit_knight1.speed;
+            bandit_knight1.img.src=bandit_knight1.state[bandit_knight1_state_id];
+            if(bandit_knight1.x>=edge){
+                bandit_knight1.faceLeft=true;
+                bandit_knight1.faceRight=false; 
+            }
+        }
+        bandit_knight1_state_id+=1;
+    }
+    if(bandit_knight1.hp<=0){
+        clearInterval(func_bandit_knight1_walk);
+    }
+}
+    //bandit_knight1 jump
+var func_bandit_knight1_fall;
+var bandit_knight1_jumpSpeed=bandit_knight1.jumpSpeed;
+function bandit_knight1_jump(){
+    if(bandit_knight1.canjump&&!bandit_knight1.isJump&&bandit_knight1.hp>0&&!canvas_stop){
+        bandit_knight1.isJump=true;
+        bandit_knight1.y-=bandit_knight1.jumpSpeed-gravity;
+        func_bandit_knight1_fall=setInterval(bandit_knight1_fall,20);
+        bandit_knight1.canjump=false;
+        setTimeout(function(){bandit_knight1.canjump=true;},3000)
+    }
+    
+}
+function bandit_knight1_fall(){
+
+    if(!canvas_stop){
+        if(bandit_knight1.y>=ground){
+            clearInterval(func_bandit_knight1_fall);
+            bandit_knight1_jumpSpeed=bandit_knight1.jumpSpeed;
+            bandit_knight1.y=ground;
+            bandit_knight1.isJump=false;
+        }else{
+            bandit_knight1.y-=bandit_knight1_jumpSpeed;
+            bandit_knight1_jumpSpeed-=gravity;
+        }
+    }
+    
+} 
 //hit enemy
 function hitenemy(){
     if(is_shot){
@@ -810,7 +974,10 @@ function hitenemy(){
             (realarrowY+10>=enemies[enemy_id].y-enemies[enemy_id].height/2&&realarrowY+10<=enemies[enemy_id].y)){
                 if((enemies[enemy_id].x<=arrowX+arrowWidth&&enemies[enemy_id].x+enemies[enemy_id].width>=arrowX+arrowWidth)
                 ||(enemies[enemy_id].x<=arrowX&&enemies[enemy_id].x+enemies[enemy_id].width>=arrowX)){
-                    document.getElementById("enemy_get_hit").play();
+                    if(!is_silence){
+                        document.getElementById("enemy_get_hit").play();
+                    }
+                    
                     enemies[enemy_id].hp-=player1.atk*max_force;
                     
                     is_shot=false;
@@ -832,7 +999,10 @@ function gothit(){
                 if(!player1.ishit&&(enemies[enemy_id].x<=player1.x+player1.width*2/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width*2/3)
                 ||(enemies[enemy_id].x<=player1.x+player1.width/3&&enemies[enemy_id].x+enemies[enemy_id].width>=player1.x+player1.width/3)){
                     //music
-                    document.getElementById("get_hit").play();
+                    if(!is_silence){
+                        document.getElementById("get_hit").play();
+                    }
+                    
                     player1.hp-=enemies[enemy_id].atk;
                     player1.ishit=true;
                     Invincible();
@@ -877,14 +1047,74 @@ function audio_load(){
                                                                 }
                                     , false);
         tmp_array[i].src=audio_array[i]
-        
-        
+
     }
 }
+//button event
 
-function restart(){
+var audio_stop_button={x:700 ,y:20,width:30,height:30}
+var audio_stop_canvas={x:750 ,y:20,width:30,height:30}
+function button_click(e){
+    var rect = canvas.getBoundingClientRect();
     
-    if(re==true){
+    console.log(e.clientX,e.clientY)
+    if(e.clientX-rect.left>=audio_stop_button.x&&e.clientX-rect.left<=audio_stop_button.x+audio_stop_button.width
+        &&e.clientY- rect.top>=audio_stop_button.y&&e.clientY- rect.top<=audio_stop_button.y+audio_stop_button.height){
+        if(!is_silence){
+            volume_icon.src="non_volume.png"
+            document.getElementById("bgm").pause()
+            tmp_array=[]
+            is_silence=true;
+        }else{
+            volume_icon.src="volume.png"
+            is_silence=false;
+        }
+            
+    }
+    if(e.clientX-rect.left>=audio_stop_canvas.x&&e.clientX-rect.left<=audio_stop_canvas.x+audio_stop_canvas.width
+        &&e.clientY- rect.top>=audio_stop_canvas.y&&e.clientY- rect.top<=audio_stop_canvas.y+audio_stop_canvas.height){
+            if(!canvas_stop){
+                pause_icon.src="play.png"
+                canvas_stop=true;
+                clearInterval(func_bandit1_walk)
+                clearInterval(func_bandit2_walk)
+                clearInterval(func_bandit1_fall)
+                clearInterval(func_bandit2_fall)
+                clearInterval(time)
+            }
+            else if(canvas_stop){
+                pause_icon.src="pause.png"
+                time=setInterval(time_countup,1000)
+                if(bandit1.spawn){
+                    func_bandit1_walk=setInterval(bandit1_walk,100)
+                    if(bandit1.y<ground){
+                        func_bandit1_fall=setInterval(bandit1_fall,20)
+                    }
+                }
+                if(bandit2.spawn){
+                    func_bandit2_walk=setInterval(bandit2_walk,100)
+                    if(bandit2.y<ground){
+                        func_bandit2_fall=setInterval(bandit2_fall,20)
+                    }
+                }
+                canvas_stop=false;
+                requestAnimationFrame(draw)
+            }
+    }
+    
+}
+function restart(){
+    if(next_stage&&stage_kill[0]>=stage_goal[0]&&stage[0]){
+        while(enemies.length>0){
+            enemies.pop()
+        }
+        enemies.push(bandit_knight1)
+        requestAnimationFrame(draw)
+        stage=[false,true]
+        time_value=60
+        clearInterval(func_re)
+    }
+    else if(re==true){
         init();
         clearInterval(func_re)
     }
