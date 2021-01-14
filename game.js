@@ -584,6 +584,25 @@ volume_icon.src="volume.png"
                 rank=localStorage.length+1
                 localStorage.setItem(rank,score)
             }
+            for(var i = 1; i <= 10; i++){
+                allscore[i] = localStorage.getItem(JSON.stringify(i));
+                console.log(allscore[i]);
+            }
+            for(var i = 1; i <= 10; i++){
+                for(var j = i + 1; j <= 10; j++){
+                    if(allscore[i] < allscore[j]){
+                        var tmp = allscore[i];
+                        allscore[i] = allscore[j];
+                        allscore[j] = tmp;
+                    }
+                }
+            }
+            for(var i = 1; i <= 10; i++){
+                document.getElementById("r" + i).innerHTML = i;
+                if(allscore[i] != undefined){
+                    document.getElementById("s" + i).innerHTML = allscore[i];
+                }
+            }
         }else if(!canvas_stop){
             requestAnimationFrame(draw);
         }
@@ -1151,6 +1170,25 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
 src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
 //run file
 $(document).ready(function(){
+    for(var i = 1; i <= 10; i++){
+        allscore[i] = localStorage.getItem(JSON.stringify(i));
+        console.log(allscore[i]);
+    }
+    for(var i = 1; i <= 10; i++){
+        for(var j = i + 1; j <= 10; j++){
+            if(allscore[i] < allscore[j]){
+                var tmp = allscore[i];
+                allscore[i] = allscore[j];
+                allscore[j] = tmp;
+            }
+        }
+    }
+    for(var i = 1; i <= 10; i++){
+        document.getElementById("r" + i).innerHTML = i;
+        if(allscore[i] != undefined){
+            document.getElementById("s" + i).innerHTML = allscore[i];
+        }
+    }
     $("button,#xx").mouseover(function(){
         document.getElementById("buttonsound").play();
     });
@@ -1186,3 +1224,4 @@ $(document).ready(function(){
 });
 //rank 
 var rank=1;
+var allscore = [];
