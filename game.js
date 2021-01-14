@@ -287,7 +287,7 @@ var func_bandit2_walk;
 var bandit_knight_state=["Wolf_right_Walk_1.png","Wolf_right_Walk_2.png","Wolf_right_Walk_3.png","Wolf_right_Walk_4.png",
 "Wolf_left_Walk_1.png","Wolf_left_Walk_2.png","Wolf_left_Walk_3.png","Wolf_left_Walk_4.png"]
 var bandit_knight_model=new Image();
-var bandit_knight1=new enemy(1000,2,0,20,15,800,player1.y,100,100,bandit_knight_model,bandit_knight_state);
+var bandit_knight1=new enemy(1000,1,0,20,15,800,player1.y,100,100,bandit_knight_model,bandit_knight_state);
 bandit_knight1.canjump=true;
 //ground
     var ground = (canvas.height - player1.height)-20;
@@ -321,6 +321,7 @@ volume_icon.src="volume.png"
             bgm=document.getElementById("bgm")
         }else if(stage[1]){
             //bgm boss
+            bgm=document.getElementById("bgm_boss")
         }
         if(!is_silence&&bgm.paused){
             bgm.play();     
@@ -548,14 +549,14 @@ volume_icon.src="volume.png"
         if(stage[0]&&stage_kill[0]>=stage_goal[0]){
             cancelAnimationFrame(draw);
             ctx.font = "50px Arial";
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             score+=player1.hp*500
             score+=time_value*100
             bgm.pause();
             bgm.currentTime=0
             ctx.fillText("The Score is:"+String(score), canvas.width/2-200, canvas.height/2);
             ctx.font = "30px Arial";
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             ctx.fillText("Press R to start the new game  ",canvas.width/2-200, canvas.height/2+50)
             ctx.fillText("or Press C to continue ",canvas.width/2-200, canvas.height/2+80)
             func_re=setInterval(restart,1)
@@ -565,17 +566,24 @@ volume_icon.src="volume.png"
             //end the game
             cancelAnimationFrame(draw);
             ctx.font = "50px Arial";
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             score+=player1.hp*500
             
             bgm.pause();
             bgm.currentTime=0
             ctx.fillText("Final Score:"+String(score), canvas.width/2-200, canvas.height/2);
             ctx.font = "30px Arial";
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
             ctx.fillText("Press R to start the new game",canvas.width/2-200, canvas.height/2+50)
             func_re=setInterval(restart,1)
             //record the highest score
+            if(localStorage.length==0){
+                rank=1;
+                localStorage.setItem(rank,score)
+            }else{
+                rank=localStorage.length+1
+                localStorage.setItem(rank,score)
+            }
         }else if(!canvas_stop){
             requestAnimationFrame(draw);
         }
@@ -916,21 +924,26 @@ function bandit_knight1_walk(){
         if(bandit_knight1_state_id>=4){
             bandit_knight1_state_id=0;
         }
-        if(bandit_knight1.x>0&&bandit_knight1.faceLeft){
+        if(bandit_knight1.x>player1.x-200&&bandit_knight1.faceLeft){
             bandit_knight1.faceLeft=true;
             bandit_knight1.faceRight=false;
             bandit_knight1.x-=bandit_knight1.speed;
             bandit_knight1.img.src=bandit_knight1.state[bandit_knight1_state_id+4];
             
-        }else if(bandit_knight1.x<edge){
+        }else if(bandit_knight1.x<=player1.x+player1.width+200){
             bandit_knight1.faceLeft=false;
             bandit_knight1.faceRight=true;
             bandit_knight1.x+=bandit_knight1.speed;
             bandit_knight1.img.src=bandit_knight1.state[bandit_knight1_state_id];
-            if(bandit_knight1.x>=edge){
+            if(bandit_knight1.x>=player1.x+player1.width+200){
                 bandit_knight1.faceLeft=true;
                 bandit_knight1.faceRight=false; 
             }
+        }else{
+            bandit_knight1.faceLeft=true;
+            bandit_knight1.faceRight=false;
+            bandit_knight1.x-=bandit_knight1.speed;
+            bandit_knight1.img.src=bandit_knight1.state[bandit_knight1_state_id+4];
         }
         bandit_knight1_state_id+=1;
     }
@@ -941,13 +954,25 @@ function bandit_knight1_walk(){
     //bandit_knight1 jump
 var func_bandit_knight1_fall;
 var bandit_knight1_jumpSpeed=bandit_knight1.jumpSpeed;
+var func_bandit_knight1_canjump;
+var bandit_knight1_canjump_time;
 function bandit_knight1_jump(){
     if(bandit_knight1.canjump&&!bandit_knight1.isJump&&bandit_knight1.hp>0&&!canvas_stop){
         bandit_knight1.isJump=true;
         bandit_knight1.y-=bandit_knight1.jumpSpeed-gravity;
         func_bandit_knight1_fall=setInterval(bandit_knight1_fall,20);
         bandit_knight1.canjump=false;
-        setTimeout(function(){bandit_knight1.canjump=true;},3000)
+        bandit_knight1_canjump_time=Math.floor(Math.random()*3)+3
+        func_bandit_knight1_canjump=setInterval(function(){
+                                                if(!canvas_stop){
+                                                    bandit_knight1_canjump_time-=0.1
+                                                }
+                                                if(bandit_knight1_canjump_time<=0){
+                                                    bandit_knight1.canjump=true;
+                                                    clearInterval(func_bandit_knight1_canjump)
+                                                }
+        }
+        ,100)
     }
     
 }
@@ -1062,7 +1087,7 @@ function button_click(e){
         &&e.clientY- rect.top>=audio_stop_button.y&&e.clientY- rect.top<=audio_stop_button.y+audio_stop_button.height){
         if(!is_silence){
             volume_icon.src="non_volume.png"
-            document.getElementById("bgm").pause()
+            bgm.pause()
             tmp_array=[]
             is_silence=true;
         }else{
@@ -1159,3 +1184,5 @@ $(document).ready(function(){
       }
     });
 });
+//rank 
+var rank=1;
