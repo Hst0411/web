@@ -567,12 +567,12 @@ volume_icon.src="volume.png"
                 localStorage.setItem(rank,score)
             }
             func_re=setInterval(restart,1)
-            for(var i = 1; i <= 10; i++){
+            for(var i = 1; i <= 20; i++){
                 allscore[i] = localStorage.getItem(JSON.stringify(i));
                 console.log(allscore[i]);
             }
-            for(var i = 1; i <= 10; i++){
-                for(var j = i + 1; j <= 10; j++){
+            for(var i = 1; i <= 20; i++){
+                for(var j = i + 1; j <= 20; j++){
                     if(parseInt(allscore[i]) < parseInt(allscore[j])){
                         var tmp = allscore[i];
                         allscore[i] = allscore[j];
@@ -611,12 +611,12 @@ volume_icon.src="volume.png"
                 rank=localStorage.length+1;
                 localStorage.setItem(rank,score)
             }
-            for(var i = 1; i <= 10; i++){
+            for(var i = 1; i <= 20; i++){
                 allscore[i] = localStorage.getItem(JSON.stringify(i));
                 console.log(allscore[i]);
             }
-            for(var i = 1; i <= 10; i++){
-                for(var j = i + 1; j <= 10; j++){
+            for(var i = 1; i <= 20; i++){
+                for(var j = i + 1; j <= 20; j++){
                     if(parseInt(allscore[i]) < parseInt(allscore[j])){
                         var tmp = allscore[i];
                         allscore[i] = allscore[j];
