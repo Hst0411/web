@@ -1198,12 +1198,12 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
 src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
 //run file
 $(document).ready(function(){
-    for(var i = 1; i <= 10; i++){
+    for(var i = 1; i <= 20; i++){
         allscore[i] = localStorage.getItem(JSON.stringify(i));
         console.log(allscore[i]);
     }
-    for(var i = 1; i <= 10; i++){
-        for(var j = i + 1; j <= 10; j++){
+    for(var i = 1; i <= 20; i++){
+        for(var j = i + 1; j <= 20; j++){
             if(parseInt(allscore[i]) < parseInt(allscore[j])){
                 var tmp = allscore[i];
                 allscore[i] = allscore[j];
